@@ -1,7 +1,7 @@
 {
   "name": "ivankff-scss-mixin",
   "version": "1.0.0",
-  "description": "Usefull SCSS mixin collection",
+  "description": "Useful SCSS mixin collection",
   "main": "src/_sassMagic.scss",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
