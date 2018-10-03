@@ -1,0 +1,513 @@
+@charset "UTF-8";
+
+@mixin font($size:null, $lh:null, $color:null, $family:null, $weight:null, $decoration:null, $style:null) {
+  @if type-of($family) == 'list' {
+    $font: append($family, sans-serif, comma);
+  } @else {
+    @if $family != null {
+      $family: (quote($family), sans-serif);
+    }
+  }
+  @if $size != null and $family != null {
+    $font: ();
+    @if $weight != null {
+      $font: append($font, $weight, space);
+    }
+    @if $style != null {
+      $font: append($font, $style, space);
+    }
+    @if $lh != null {
+      $size: #{$size}/#{$lh};
+    }
+    $font: append($font, $size, space);
+    $font: append($font, $family, space);
+    font: $font;
+  } @else {
+    @if $family != null {
+      font-family: $family;
+    }
+    @if $weight != null {
+      font-weight: $weight;
+    }
+    @if $size != null {
+      font-size: $size;
+    }
+    @if $style != null {
+      font-style: $style;
+    }
+    @if $lh != null {
+      line-height: $lh;
+    }
+  }
+  @if $color != null {
+    color: $color;
+  }
+  @if $decoration != null {
+    text-decoration: $decoration;
+  }
+}
+
+@mixin a-inherit {
+  @include font(null,null,inherit,null,null,inherit);
+}
+
+@mixin a-u-border($border: null, $border-hover: null){
+  @if $border == null {
+    $border: transparent dashed 1px;
+  }
+  @if $border-hover == null {
+    $border: transparent dashed 1px;
+  }
+  text-decoration: none;
+  u {
+    text-decoration: none;
+    border-bottom: $border;
+  }
+  &:hover {
+    text-decoration: none;
+    u {
+      border-bottom: $border-hover;
+    }
+  }
+}
+
+@mixin placeholder {
+  &.placeholder { @content; }
+  &:-moz-placeholder { @content; }
+  &::-moz-placeholder { @content; }
+  &::-webkit-input-placeholder { @content; }
+}
+
+/**********************************************************************************************************************/
+
+@mixin icomoon($height, $color:null, $family:'icomoon'){
+  @include font($height, 1, $color, $family, normal, none, normal);
+  speak: none;
+  font-variant: normal;
+  text-transform: none;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin icomoon-before($icon, $height, $color:null, $top:null, $left:null, $family:'icomoon'){
+  @if $top != null and $left != null {
+    position: relative;
+  }
+  &:before {
+    @include icomoon($height, $color, $family);
+    @if $icon != null {
+      content: $icon;
+    }
+    @if $top != null and $left != null {
+      position: absolute;
+      left: $left;
+      top:$top;
+    }
+  }
+}
+
+@mixin icomoon-after($icon, $height, $color:null, $top:null, $right:null){
+  @if $top != null and $right != null {
+    position: relative;
+  }
+  &:after {
+    @include icomoon($height, $color);
+    @if $icon != null {
+      content: $icon;
+    }
+    @if $top != null and $right != null {
+      position: absolute;
+      right: $right;
+      top:$top;
+    }
+  }
+}
+
+/**********************************************************************************************************************/
+
+@function is-direction($value) {
+  $is-keyword: index((to top, to top right, to right top, to right, to bottom right, to right bottom, to bottom, to bottom left, to left bottom, to left, to left top, to top left), $value);
+  $is-angle: type-of($value) == 'number' and index('deg' 'grad' 'turn' 'rad', unit($value));
+
+  @return $is-keyword or $is-angle;
+}
+
+
+@function legacy-direction($value) {
+  @if is-direction($value) == false {
+    @error "Cannot convert `#{$value}` to legacy syntax because it doesn't seem to be a direction.";
+  }
+
+  $conversion-map: (
+          to top          : bottom,
+          to top right    : bottom left,
+          to right top    : left bottom,
+          to right        : left,
+          to bottom right : top left,
+          to right bottom : left top,
+          to bottom       : top,
+          to bottom left  : top right,
+          to left bottom  : right top,
+          to left         : right,
+          to left top     : right bottom,
+          to top left     : bottom right
+  );
+
+  @if map-has-key($conversion-map, $value) {
+    @return map-get($conversion-map, $value);
+  }
+
+  @return 90deg - $value;
+}
+
+
+/// Mixin printing a linear-gradient
+/// as well as a plain color fallback
+/// and the `-webkit-` prefixed declaration
+/// @access public
+/// @param {Keyword | Angle} $direction - Linear gradient direction
+/// @param {Arglist} $color-stops - List of color-stops composing the gradient
+@mixin linear-gradient($direction, $color-stops...) {
+  // Direction has been omitted and happens to be a color-stop
+  @if is-direction($direction) == false {
+    $color-stops: $direction, $color-stops;
+    $direction: 180deg;
+  }
+
+  background: nth(nth($color-stops, 1), 1);
+  background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+  background: linear-gradient($direction, $color-stops);
+}
+
+
+@mixin text-gradient($direction, $color-stops...) {
+  @include linear-gradient($direction, $color-stops);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/**********************************************************************************************************************/
+
+@mixin btn-transparent {
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  &:hover, &:focus, &:active {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+/**********************************************************************************************************************/
+
+@mixin vertical-center($innerElement, $height:null) {
+  @if ($height != null) {
+    height: $height;
+  }
+  &:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+  & > #{$innerElement} {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+/**********************************************************************************************************************/
+
+@mixin jcarousel($width:null, $height:null, $count1200:null, $count992:null, $count768:null, $count576:null, $count0:null) {
+  position: relative;
+  overflow: hidden;
+  margin: auto;
+  @if $width != null {
+    @if $count0 != null {
+      width: $width * $count0;
+    }
+    @if $count576 != null {
+      @include media-breakpoint-only(sm) {
+        width: $width * $count576;
+      }
+    }
+    @if $count768 != null {
+      @include media-breakpoint-only(md) {
+        width: $width * $count768;
+      }
+    }
+    @if $count992 != null {
+      @include media-breakpoint-only(lg) {
+        width: $width * $count992;
+      }
+    }
+    @if $count1200 != null {
+      @include media-breakpoint-up(xl) {
+        width: $width * $count1200;
+      }
+    }
+  }
+  &>ul {
+    width: 20000em;
+    position: relative;
+    padding-left: 0;
+    list-style: none;
+    &>li {
+      float: left;
+      @if $width != null {
+        width: $width;
+      }
+      @if $height != null {
+        height: $height;
+      }
+    }
+  }
+}
+
+/**********************************************************************************************************************/
+
+@function strip-unit($value) {
+  @return $value / ($value * 0 + 1);
+}
+
+@function x-rem ($values, $main-font-size: $font-size-html) {
+
+  // Empty list for all values in px
+  $px-values: ();
+  $rem-values: ();
+
+  // Iterate over entries
+  @each $value in $values {
+
+    // If the value is zero or of a type that doesn't need conversion, return the value untouched
+    @if index(auto inherit initial none 0, $value) or type-of($value) != "number" {
+      $px-values: append($px-values, $value);
+      $rem-values: append($rem-values, $value);
+
+      // Otherwise convert it properly
+    } @else {
+      $unit: unit($value);
+
+      @if $unit == 'px' {
+        $px-values: append($px-values, #{strip-unit($value)} * 1px );
+        $rem-values: append($rem-values, (strip-unit($value) / strip-unit($main-font-size) * 1rem));
+      } @else {
+        $px-values: append($px-values, ($value * $main-font-size) );
+        $rem-values: append($rem-values, #{$value} * 1rem);
+      }
+
+    }
+  }
+
+  // Return the property and its list of converted values
+  @return #{$rem-values};
+}
+
+/**********************************************************************************************************************/
+
+@mixin corner ($side, $width, $height, $inside: false, $border-width: 0, $background-color: transparent, $border-color: transparent, $side-offset: $border-width) {
+
+  @if $border-width > 0 {
+
+    &:after, &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      z-index: 3;
+      border-style: solid;
+      border-color: transparent;
+
+      @if ($side == top) or ($side == bottom) {
+        left: calc(50% - #{x-rem($width/2)} + #{$border-width});
+        width: calc(#{x-rem($width)} - #{$border-width*2});
+        height: calc(#{x-rem($height*2)} - #{$border-width*2});
+        border-width: calc(#{x-rem($height)} - #{$border-width});
+        border-left-width: calc(#{x-rem($width/2)} - #{$border-width});
+        border-right-width: calc(#{x-rem($width/2)} - #{$border-width});
+      }
+      @if ($side == left) or ($side == right) {
+        top: calc(50% - #{x-rem($height/2)} + #{$border-width});
+        width: calc(#{x-rem($width*2)} - #{$border-width*2});
+        height: calc(#{x-rem($height)} - #{$border-width*2});
+        border-width: calc(#{x-rem($width)} - #{$border-width});
+        border-top-width: calc(#{x-rem($height/2)} - #{$border-width});
+        border-bottom-width: calc(#{x-rem($height/2)} - #{$border-width});
+      }
+
+      @if $side == top {
+
+        @if $inside {
+          border-top-color: $background-color;
+          top: #{$side-offset*-1};
+        } @else {
+          border-bottom-color: $background-color;
+          bottom: 100%;
+        }
+
+      } @else if $side == bottom {
+
+        @if $inside {
+          border-bottom-color: $background-color;
+          bottom: #{$side-offset*-1};
+        } @else {
+          border-top-color: $background-color;
+          top: 100%;
+        }
+
+      } @else if $side == left {
+
+        @if $inside {
+          border-left-color: $background-color;
+          left: #{$side-offset*-1};
+        } @else {
+          border-right-color: $background-color;
+          right: 100%;
+        }
+
+      } @else if $side == right {
+
+        @if $inside {
+          border-right-color: $background-color;
+          right: #{$side-offset*-1};
+        } @else {
+          border-left-color: $background-color;
+          left: 100%;
+        }
+
+      }
+
+    }
+
+    &:before {
+      @if ($side == top) or ($side == bottom) {
+        left: calc(50% - #{x-rem($width/2)});
+        width: x-rem($width);
+        height: x-rem($height*2);
+        border-width: x-rem($height);
+        border-left-width: x-rem($width/2);
+        border-right-width: x-rem($width/2);
+      }
+      @if ($side == left) or ($side == right) {
+        top: calc(50% - #{x-rem($height/2)});
+        width: x-rem($width*2);
+        height: x-rem($height);
+        border-width: x-rem($width);
+        border-top-width: x-rem($height/2);
+        border-bottom-width: x-rem($height/2);
+      }
+
+      @if $side == top {
+
+        @if $inside {
+          border-top-color: $border-color;
+        } @else {
+          border-bottom-color: $border-color;
+        }
+
+      } @else if $side == bottom {
+
+        @if $inside {
+          border-bottom-color: $border-color;
+        } @else {
+          border-top-color: $border-color;
+        }
+
+      } @else if $side == left {
+
+        @if $inside {
+          border-left-color: $border-color;
+        } @else {
+          border-right-color: $border-color;
+        }
+
+      } @else if $side == right {
+
+        @if $inside {
+          border-right-color: $border-color;
+        } @else {
+          border-left-color: $border-color;
+        }
+
+      }
+
+      z-index: 2;
+    }
+
+  } @else {
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      z-index: 2;
+      border-style: solid;
+      border-color: transparent;
+
+      @if ($side == top) or ($side == bottom) {
+        left: calc(50% - #{x-rem($width/2)});
+        width: #{x-rem($width)};
+        height: #{x-rem($height*2)};
+        border-width: #{x-rem($height)};
+        border-left-width: #{x-rem($width/2)};
+        border-right-width: #{x-rem($width/2)};
+      }
+      @if ($side == left) or ($side == right) {
+        top: calc(50% - #{x-rem($height/2)});
+        width: #{x-rem($width*2)};
+        height: #{x-rem($height)};
+        border-width: #{x-rem($width)};
+        border-top-width: #{x-rem($height/2)};
+        border-bottom-width: #{x-rem($height/2)};
+      }
+
+      @if $side == top {
+
+        @if $inside {
+          border-top-color: $background-color;
+          top: #{$side-offset*-1};
+        } @else {
+          border-bottom-color: $background-color;
+          bottom: 100%;
+        }
+
+      } @else if $side == bottom {
+
+        @if $inside {
+          border-bottom-color: $background-color;
+          bottom: #{$side-offset*-1};
+        } @else {
+          border-top-color: $background-color;
+          top: 100%;
+        }
+
+      } @else if $side == left {
+
+        @if $inside {
+          border-left-color: $background-color;
+          left: #{$side-offset*-1};
+        } @else {
+          border-right-color: $background-color;
+          right: 100%;
+        }
+
+      } @else if $side == right {
+
+        @if $inside {
+          border-right-color: $background-color;
+          right: #{$side-offset*-1};
+        } @else {
+          border-left-color: $background-color;
+          left: 100%;
+        }
+
+      }
+
+    }
+
+  }
+
+}

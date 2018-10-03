@@ -1,0 +1,23 @@
+{
+  "name": "ivankff-scss-mixin",
+  "version": "1.0.0",
+  "description": "usefull scss mixin collection",
+  "main": "src/_mixin.scss",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ivankff/scss-mixin.git"
+  },
+  "keywords": [
+    "scss",
+    "mixin"
+  ],
+  "author": "ivankff@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ivankff/scss-minix/issues"
+  },
+  "homepage": "https://github.com/ivankff/scss-minix#readme"
+}
