@@ -80,8 +80,8 @@
 
 /**********************************************************************************************************************/
 
-@mixin icomoon($height, $color:null, $family:'icomoon'){
-  @include font($height, 1, $color, $family, normal, none, normal);
+@mixin icomoon($height, $color:null, $family:'icomoon', $weight:'normal'){
+  @include font($height, 1, $color, $family, $weight, none, normal);
   speak: none;
   font-variant: normal;
   text-transform: none;
