@@ -90,12 +90,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-@mixin icomoon-before($icon, $height, $color:null, $top:null, $left:null, $family:'icomoon'){
+@mixin icomoon-before($icon, $height, $color:null, $top:null, $left:null, $family:'icomoon', $weight:'normal'){
   @if $top != null and $left != null {
     position: relative;
   }
   &:before {
-    @include icomoon($height, $color, $family);
+    @include icomoon($height, $color, $family, $weight);
     @if $icon != null {
       content: $icon;
     }
@@ -107,12 +107,12 @@
   }
 }
 
-@mixin icomoon-after($icon, $height, $color:null, $top:null, $right:null){
+@mixin icomoon-after($icon, $height, $color:null, $top:null, $right:null, $family:'icomoon', $weight:'normal'){
   @if $top != null and $right != null {
     position: relative;
   }
   &:after {
-    @include icomoon($height, $color);
+    @include icomoon($height, $color, $family, $weight);
     @if $icon != null {
       content: $icon;
     }
