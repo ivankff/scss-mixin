@@ -80,7 +80,7 @@
 
 /**********************************************************************************************************************/
 
-@mixin icomoon($height, $color:null, $family:'icomoon', $weight:'normal'){
+@mixin icomoon($height, $color:null, $family:'icomoon', $weight:normal){
   @include font($height, 1, $color, $family, $weight, none, normal);
   speak: none;
   font-variant: normal;
@@ -90,7 +90,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-@mixin icomoon-before($icon, $height, $color:null, $top:null, $left:null, $family:'icomoon', $weight:'normal'){
+@mixin icomoon-before($icon, $height, $color:null, $top:null, $left:null, $family:'icomoon', $weight:normal){
   @if $top != null and $left != null {
     position: relative;
   }
@@ -107,7 +107,7 @@
   }
 }
 
-@mixin icomoon-after($icon, $height, $color:null, $top:null, $right:null, $family:'icomoon', $weight:'normal'){
+@mixin icomoon-after($icon, $height, $color:null, $top:null, $right:null, $family:'icomoon', $weight:normal){
   @if $top != null and $right != null {
     position: relative;
   }
