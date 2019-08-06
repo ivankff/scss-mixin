@@ -309,7 +309,7 @@
 
 /**********************************************************************************************************************/
 
-@mixin corner ($side, $width, $height, $inside: false, $border-width: 0, $background-color: transparent, $border-color: transparent, $side-offset: $border-width) {
+@mixin corner ($side, $width, $height, $inside: false, $border-width: 0, $background-color: transparent, $border-color: transparent, $side-offset: $border-width, $z-index: 2) {
 
   @if $border-width > 0 {
 
@@ -317,7 +317,7 @@
       content: '';
       display: block;
       position: absolute;
-      z-index: 3;
+      z-index: $z-index+1;
       border-style: solid;
       border-color: transparent;
 
@@ -434,7 +434,7 @@
 
       }
 
-      z-index: 2;
+      z-index: $z-index;
     }
 
   } @else {
@@ -443,7 +443,7 @@
       content: '';
       display: block;
       position: absolute;
-      z-index: 2;
+      z-index: $z-index;
       border-style: solid;
       border-color: transparent;
 
