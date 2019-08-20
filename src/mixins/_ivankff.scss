@@ -511,3 +511,20 @@
   }
 
 }
+
+
+/**********************************************************************************************************************/
+
+$icons: () !default;
+
+/// @param {String} $selector - '&.cat# > a:before, &.cat# > span:before'
+/// @param {Array} $special - Substring to replace
+@mixin icons-list($selector, $only: []) {
+  @each $key, $icon in $icons {
+    @if (length($only) == 0) or (index($only, $key)) {
+      #{ae-str-replace($selector, '#', $key)} {
+        content: $icon;
+      }
+    }
+  }
+}
