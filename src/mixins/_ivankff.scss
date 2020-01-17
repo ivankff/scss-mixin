@@ -339,45 +339,37 @@
       }
 
       @if $side == top {
-
         @if $inside {
           border-top-color: $background-color;
           top: #{$side-offset*-1};
         } @else {
           border-bottom-color: $background-color;
-          bottom: 100%;
+          bottom: calc(100% - #{$side-offset*-1});
         }
-
       } @else if $side == bottom {
-
         @if $inside {
           border-bottom-color: $background-color;
           bottom: #{$side-offset*-1};
         } @else {
           border-top-color: $background-color;
-          top: 100%;
+          top: calc(100% - #{$side-offset*-1});
         }
-
       } @else if $side == left {
-
         @if $inside {
           border-left-color: $background-color;
           left: #{$side-offset*-1};
         } @else {
           border-right-color: $background-color;
-          right: 100%;
+          right: calc(100% - #{$side-offset*-1});
         }
-
       } @else if $side == right {
-
         @if $inside {
           border-right-color: $background-color;
           right: #{$side-offset*-1};
         } @else {
           border-left-color: $background-color;
-          left: 100%;
+          left: calc(100% - #{$side-offset*-1});
         }
-
       }
 
     }
@@ -401,37 +393,29 @@
       }
 
       @if $side == top {
-
         @if $inside {
           border-top-color: $border-color;
         } @else {
           border-bottom-color: $border-color;
         }
-
       } @else if $side == bottom {
-
         @if $inside {
           border-bottom-color: $border-color;
         } @else {
           border-top-color: $border-color;
         }
-
       } @else if $side == left {
-
         @if $inside {
           border-left-color: $border-color;
         } @else {
           border-right-color: $border-color;
         }
-
       } @else if $side == right {
-
         @if $inside {
           border-right-color: $border-color;
         } @else {
           border-left-color: $border-color;
         }
-
       }
 
       z-index: $z-index;
@@ -465,45 +449,37 @@
       }
 
       @if $side == top {
-
         @if $inside {
           border-top-color: $background-color;
           top: #{$side-offset*-1};
         } @else {
           border-bottom-color: $background-color;
-          bottom: 100%;
+          bottom: calc(100% - #{$side-offset*-1});
         }
-
       } @else if $side == bottom {
-
         @if $inside {
           border-bottom-color: $background-color;
           bottom: #{$side-offset*-1};
         } @else {
           border-top-color: $background-color;
-          top: 100%;
+          top: calc(100% - #{$side-offset*-1});
         }
-
       } @else if $side == left {
-
         @if $inside {
           border-left-color: $background-color;
           left: #{$side-offset*-1};
         } @else {
           border-right-color: $background-color;
-          right: 100%;
+          right: calc(100% - #{$side-offset*-1});
         }
-
       } @else if $side == right {
-
         @if $inside {
           border-right-color: $background-color;
           right: #{$side-offset*-1};
         } @else {
           border-left-color: $background-color;
-          left: 100%;
+          left: calc(100% - #{$side-offset*-1});
         }
-
       }
 
     }
@@ -511,7 +487,6 @@
   }
 
 }
-
 
 /**********************************************************************************************************************/
 
